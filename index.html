@@ -1,0 +1,1160 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NeuroAprender Kids</title>
+    <style>
+        /* CSS - Estilos principais do aplicativo */
+        :root {
+            --primary: #4A90E2;
+            --secondary: #50E3C2;
+            --accent: #F5A623;
+            --light: #F8F9FA;
+            --dark: #333333;
+            --danger: #D0021B;
+            --success: #7ED321;
+            --warning: #F8E71C;
+            --purple: #BD10E0;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        /* Fonte para dislexia */
+        @font-face {
+            font-family: 'OpenDyslexic';
+            src: url('https://cdn.jsdelivr.net/npm/open-dyslexic@1.0.3/otf/OpenDyslexic-Regular.otf');
+        }
+        
+        body {
+            background: linear-gradient(135deg, #4A90E2, #50E3C2);
+            min-height: 100vh;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 20px;
+        }
+        
+        .app-container {
+            width: 100%;
+            max-width: 400px;
+            height: 700px;
+            background-color: white;
+            border-radius: 20px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+        }
+        
+        /* Header */
+        .app-header {
+            background-color: var(--primary);
+            color: white;
+            padding: 15px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            position: relative;
+            z-index: 10;
+        }
+        
+        .logo {
+            font-size: 1.5rem;
+            font-weight: bold;
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo-icon {
+            margin-right: 10px;
+            font-size: 1.8rem;
+        }
+        
+        .user-avatar {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            background-color: var(--secondary);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+            cursor: pointer;
+        }
+        
+        /* Conteúdo principal */
+        .app-content {
+            flex: 1;
+            padding: 20px;
+            overflow-y: auto;
+            background-color: var(--light);
+        }
+        
+        .welcome-section {
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        
+        .welcome-section h2 {
+            color: var(--primary);
+            margin-bottom: 10px;
+        }
+        
+        .avatar-selection {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        
+        .avatar-option {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            transition: transform 0.3s;
+            background-color: white;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .avatar-option:hover {
+            transform: scale(1.05);
+        }
+        
+        .avatar-option.selected {
+            border: 3px solid var(--accent);
+        }
+        
+        .avatar-icon {
+            font-size: 2rem;
+            margin-bottom: 5px;
+        }
+        
+        /* Menu de jogos */
+        .games-menu {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+        }
+        
+        .game-card {
+            background-color: white;
+            border-radius: 15px;
+            padding: 20px;
+            text-align: center;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            cursor: pointer;
+            transition: transform 0.3s;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .game-card.math {
+            border-top: 5px solid var(--primary);
+        }
+        
+        .game-card.portuguese {
+            border-top: 5px solid var(--success);
+        }
+        
+        .game-icon {
+            font-size: 2.5rem;
+            margin-bottom: 10px;
+        }
+        
+        .game-title {
+            font-weight: bold;
+            margin-bottom: 5px;
+        }
+        
+        .game-description {
+            font-size: 0.8rem;
+            color: var(--dark);
+        }
+        
+        /* Tela de jogo */
+        .game-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 20;
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        
+        .back-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--primary);
+        }
+        
+        .game-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+        
+        .game-question {
+            font-size: 1.5rem;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .game-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            max-width: 300px;
+        }
+        
+        .game-option {
+            padding: 15px;
+            background-color: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .game-option:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .game-feedback {
+            margin-top: 20px;
+            font-weight: bold;
+            min-height: 30px;
+        }
+        
+        .correct {
+            color: var(--success);
+        }
+        
+        .incorrect {
+            color: var(--danger);
+        }
+        
+        /* Configurações */
+        .settings-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 20;
+        }
+        
+        .settings-option {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .toggle-switch {
+            position: relative;
+            display: inline-block;
+            width: 50px;
+            height: 24px;
+        }
+        
+        .toggle-switch input {
+            opacity: 0;
+            width: 0;
+            height: 0;
+        }
+        
+        .slider {
+            position: absolute;
+            cursor: pointer;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background-color: #ccc;
+            transition: .4s;
+            border-radius: 24px;
+        }
+        
+        .slider:before {
+            position: absolute;
+            content: "";
+            height: 16px;
+            width: 16px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+        
+        input:checked + .slider {
+            background-color: var(--primary);
+        }
+        
+        input:checked + .slider:before {
+            transform: translateX(26px);
+        }
+        
+        /* Footer */
+        .app-footer {
+            background-color: white;
+            padding: 10px;
+            display: flex;
+            justify-content: space-around;
+            border-top: 1px solid #eee;
+        }
+        
+        .nav-button {
+            background: none;
+            border: none;
+            font-size: 1.5rem;
+            cursor: pointer;
+            color: var(--dark);
+            transition: color 0.3s;
+        }
+        
+        .nav-button.active {
+            color: var(--primary);
+        }
+        
+        /* Progresso */
+        .progress-section {
+            background-color: white;
+            padding: 15px;
+            border-radius: 15px;
+            margin-bottom: 20px;
+            box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+        }
+        
+        .progress-bar {
+            height: 10px;
+            background-color: #eee;
+            border-radius: 5px;
+            margin-top: 10px;
+            overflow: hidden;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background-color: var(--success);
+            width: 65%;
+        }
+        
+        /* Tela de Conquistas */
+        .achievements-screen {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: white;
+            padding: 20px;
+            display: none;
+            flex-direction: column;
+            z-index: 20;
+            overflow-y: auto;
+        }
+        
+        .achievement-card {
+            display: flex;
+            align-items: center;
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 15px;
+            box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+        }
+        
+        .achievement-icon {
+            font-size: 2rem;
+            margin-right: 15px;
+        }
+        
+        .achievement-info h4 {
+            margin-bottom: 5px;
+        }
+        
+        .achievement-info p {
+            font-size: 0.9rem;
+            color: var(--dark);
+        }
+        
+        .achievement-locked {
+            opacity: 0.5;
+        }
+        
+        /* Jogo de Sílabas */
+        .syllable-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .syllable-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .syllable {
+            padding: 10px 15px;
+            background-color: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .syllable:hover {
+            background-color: var(--primary);
+            color: white;
+        }
+        
+        .word-container {
+            min-height: 60px;
+            width: 100%;
+            border: 2px dashed var(--accent);
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            padding: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            gap: 5px;
+        }
+        
+        .word-syllable {
+            padding: 8px 12px;
+            background-color: var(--secondary);
+            border-radius: 6px;
+            font-weight: bold;
+        }
+        
+        /* Jogo de Compras */
+        .shopping-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .money-display {
+            font-size: 1.5rem;
+            font-weight: bold;
+            color: var(--success);
+            margin-bottom: 20px;
+        }
+        
+        .items-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .item-card {
+            background-color: white;
+            border: 2px solid var(--primary);
+            border-radius: 10px;
+            padding: 15px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .item-card:hover {
+            transform: scale(1.05);
+        }
+        
+        .item-price {
+            font-weight: bold;
+            color: var(--success);
+            margin-top: 5px;
+        }
+        
+        .cart-container {
+            width: 100%;
+            border: 2px solid var(--accent);
+            border-radius: 10px;
+            padding: 15px;
+            margin-top: 20px;
+        }
+        
+        .cart-title {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        .cart-items {
+            min-height: 50px;
+        }
+        
+        /* Timer para TDAH */
+        .timer-container {
+            position: absolute;
+            top: 15px;
+            right: 15px;
+            background-color: var(--warning);
+            color: var(--dark);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-weight: bold;
+        }
+        
+        /* Responsividade */
+        @media (max-width: 480px) {
+            .app-container {
+                height: 100vh;
+                border-radius: 0;
+            }
+            
+            .game-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .items-container {
+                grid-template-columns: 1fr;
+            }
+        }
+        
+        /* Modo Alto Contraste */
+        .high-contrast {
+            --primary: #000000;
+            --secondary: #FFFFFF;
+            --light: #FFFFFF;
+            --dark: #000000;
+            --accent: #FFFF00;
+        }
+        
+        /* Fonte para Dislexia */
+        .dyslexia-font {
+            font-family: 'OpenDyslexic', sans-serif;
+            letter-spacing: 1px;
+            line-height: 1.6;
+        }
+    </style>
+</head>
+<body>
+    <div class="app-container">
+        <!-- Cabeçalho -->
+        <div class="app-header">
+            <div class="logo">
+                <span class="logo-icon">🧠</span>
+                NeuroAprender Kids
+            </div>
+            <div class="user-avatar" id="user-avatar">Z</div>
+        </div>
+        
+        <!-- Conteúdo Principal -->
+        <div class="app-content" id="main-content">
+            <div class="welcome-section">
+                <h2>Olá, Zeca!</h2>
+                <p>Vamos aprender brincando?</p>
+                
+                <div class="avatar-selection">
+                    <div class="avatar-option selected" data-avatar="Z">
+                        <span class="avatar-icon">🐿️</span>
+                        <span>Zeca</span>
+                    </div>
+                    <div class="avatar-option" data-avatar="L">
+                        <span class="avatar-icon">🦉</span>
+                        <span>Lina</span>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="progress-section">
+                <h3>Seu Progresso</h3>
+                <p>Matemática: 65% | Português: 45%</p>
+                <div class="progress-bar">
+                    <div class="progress-fill" id="overall-progress"></div>
+                </div>
+            </div>
+            
+            <div class="games-menu">
+                <div class="game-card math" data-game="shopping">
+                    <div class="game-icon">🛒</div>
+                    <div class="game-title">Carrinho de Compras</div>
+                    <div class="game-description">Aprenda matemática fazendo compras!</div>
+                </div>
+                
+                <div class="game-card portuguese" data-game="syllables">
+                    <div class="game-icon">🔤</div>
+                    <div class="game-title">Sílaba Mágica</div>
+                    <div class="game-description">Forme palavras com sílabas!</div>
+                </div>
+                
+                <div class="game-card math" data-game="puzzle">
+                    <div class="game-icon">🧩</div>
+                    <div class="game-title">Quebra-Cabeça</div>
+                    <div class="game-description">Complete sequências numéricas!</div>
+                </div>
+                
+                <div class="game-card portuguese" data-game="detective">
+                    <div class="game-icon">🔍</div>
+                    <div class="game-title">Detetive de Textos</div>
+                    <div class="game-description">Encontre informações nos textos!</div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Jogo - Carrinho de Compras -->
+        <div class="game-screen" id="shopping-game-screen">
+            <div class="game-header">
+                <button class="back-button" id="back-from-shopping">←</button>
+                <h3>Carrinho de Compras</h3>
+                <div class="timer-container" id="shopping-timer">02:00</div>
+            </div>
+            
+            <div class="game-content">
+                <div class="shopping-game">
+                    <div class="money-display" id="money-display">Seu dinheiro: R$ 10,00</div>
+                    
+                    <div class="game-question" id="shopping-question">
+                        Escolha itens para comprar sem gastar mais do que você tem!
+                    </div>
+                    
+                    <div class="items-container" id="items-container">
+                        <!-- Itens serão inseridos via JavaScript -->
+                    </div>
+                    
+                    <div class="cart-container">
+                        <div class="cart-title">Seu Carrinho:</div>
+                        <div class="cart-items" id="cart-items"></div>
+                        <div id="shopping-feedback" class="game-feedback"></div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Jogo - Sílabas -->
+        <div class="game-screen" id="syllables-game-screen">
+            <div class="game-header">
+                <button class="back-button" id="back-from-syllables">←</button>
+                <h3>Sílaba Mágica</h3>
+                <div class="timer-container" id="syllables-timer">03:00</div>
+            </div>
+            
+            <div class="game-content">
+                <div class="syllable-game">
+                    <div class="game-question" id="syllables-question">
+                        Forme a palavra: <strong id="target-word">CASA</strong>
+                    </div>
+                    
+                    <div class="word-container" id="word-container">
+                        <!-- Sílabas da palavra formada aparecerão aqui -->
+                    </div>
+                    
+                    <div class="syllable-container" id="syllable-container">
+                        <!-- Sílabas disponíveis serão inseridas via JavaScript -->
+                    </div>
+                    
+                    <button id="check-word" style="padding: 10px 20px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px;">Verificar</button>
+                    
+                    <div id="syllables-feedback" class="game-feedback"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Conquistas -->
+        <div class="achievements-screen" id="achievements-screen">
+            <div class="game-header">
+                <button class="back-button" id="back-from-achievements">←</button>
+                <h3>Minhas Conquistas</h3>
+                <div></div>
+            </div>
+            
+            <div class="achievement-card">
+                <div class="achievement-icon">🏆</div>
+                <div class="achievement-info">
+                    <h4>Primeiros Passos</h4>
+                    <p>Complete seu primeiro jogo</p>
+                </div>
+            </div>
+            
+            <div class="achievement-card">
+                <div class="achievement-icon">⭐</div>
+                <div class="achievement-info">
+                    <h4>Mestre da Matemática</h4>
+                    <p>Acertar 10 questões de matemática</p>
+                </div>
+            </div>
+            
+            <div class="achievement-card achievement-locked">
+                <div class="achievement-icon">🔒</div>
+                <div class="achievement-info">
+                    <h4>Leitor Ávido</h4>
+                    <p>Complete 5 jogos de português</p>
+                </div>
+            </div>
+            
+            <div class="achievement-card achievement-locked">
+                <div class="achievement-icon">🔒</div>
+                <div class="achievement-info">
+                    <h4>Velocista</h4>
+                    <p>Termine um jogo em menos de 1 minuto</p>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Configurações -->
+        <div class="settings-screen" id="settings-screen">
+            <div class="game-header">
+                <button class="back-button" id="back-from-settings">←</button>
+                <h3>Configurações</h3>
+                <div></div>
+            </div>
+            
+            <div class="settings-option">
+                <span>Fonte para Dislexia</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="dyslexia-font">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="settings-option">
+                <span>Áudio para Instruções</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="audio-instructions" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="settings-option">
+                <span>Tempo Limitado</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="time-limit">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="settings-option">
+                <span>Cores de Alto Contraste</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="high-contrast">
+                    <span class="slider"></span>
+                </label>
+            </div>
+            
+            <div class="settings-option">
+                <span>Sílabas Coloridas</span>
+                <label class="toggle-switch">
+                    <input type="checkbox" id="colored-syllables" checked>
+                    <span class="slider"></span>
+                </label>
+            </div>
+        </div>
+        
+        <!-- Rodapé com Navegação -->
+        <div class="app-footer">
+            <button class="nav-button active" id="nav-home">🏠</button>
+            <button class="nav-button" id="nav-achievements">🏆</button>
+            <button class="nav-button" id="nav-settings">⚙️</button>
+        </div>
+    </div>
+
+    <script>
+        // JavaScript - Lógica completa do aplicativo
+        
+        // Elementos da DOM
+        const mainContent = document.getElementById('main-content');
+        const shoppingGameScreen = document.getElementById('shopping-game-screen');
+        const syllablesGameScreen = document.getElementById('syllables-game-screen');
+        const achievementsScreen = document.getElementById('achievements-screen');
+        const settingsScreen = document.getElementById('settings-screen');
+        const userAvatar = document.getElementById('user-avatar');
+        
+        // Botões de navegação
+        const navHome = document.getElementById('nav-home');
+        const navAchievements = document.getElementById('nav-achievements');
+        const navSettings = document.getElementById('nav-settings');
+        
+        // Botões de voltar
+        const backFromShopping = document.getElementById('back-from-shopping');
+        const backFromSyllables = document.getElementById('back-from-syllables');
+        const backFromAchievements = document.getElementById('back-from-achievements');
+        const backFromSettings = document.getElementById('back-from-settings');
+        
+        // Elementos de jogo
+        const itemsContainer = document.getElementById('items-container');
+        const cartItems = document.getElementById('cart-items');
+        const moneyDisplay = document.getElementById('money-display');
+        const shoppingFeedback = document.getElementById('shopping-feedback');
+        
+        const syllableContainer = document.getElementById('syllable-container');
+        const wordContainer = document.getElementById('word-container');
+        const targetWord = document.getElementById('target-word');
+        const checkWordButton = document.getElementById('check-word');
+        const syllablesFeedback = document.getElementById('syllables-feedback');
+        
+        // Configurações
+        const dyslexiaFont = document.getElementById('dyslexia-font');
+        const audioInstructions = document.getElementById('audio-instructions');
+        const timeLimit = document.getElementById('time-limit');
+        const highContrast = document.getElementById('high-contrast');
+        const coloredSyllables = document.getElementById('colored-syllables');
+        
+        // Seleção de avatar
+        const avatarOptions = document.querySelectorAll('.avatar-option');
+        
+        // Timers
+        const shoppingTimer = document.getElementById('shopping-timer');
+        const syllablesTimer = document.getElementById('syllables-timer');
+        
+        // Progresso
+        const overallProgress = document.getElementById('overall-progress');
+        
+        // Estado do aplicativo
+        let currentAvatar = 'Z';
+        let gameState = {
+            mathScore: 65,
+            portugueseScore: 45,
+            settings: {
+                dyslexiaFont: false,
+                audioInstructions: true,
+                timeLimit: false,
+                highContrast: false,
+                coloredSyllables: true
+            },
+            achievements: {
+                firstSteps: true,
+                mathMaster: true,
+                avidReader: false,
+                speedster: false
+            }
+        };
+        
+        // Estado dos jogos
+        let shoppingState = {
+            money: 10,
+            cart: [],
+            items: [
+                { name: "Lápis", price: 2, emoji: "✏️" },
+                { name: "Borracha", price: 1, emoji: "🧼" },
+                { name: "Caderno", price: 5, emoji: "📓" },
+                { name: "Lanche", price: 3, emoji: "🍎" }
+            ]
+        };
+        
+        let syllablesState = {
+            currentWord: "CASA",
+            selectedSyllables: [],
+            availableSyllables: ["CA", "SA", "MA", "LA", "PE", "LO", "CO", "DA"]
+        };
+        
+        // Inicialização
+        document.addEventListener('DOMContentLoaded', function() {
+            // Carregar estado salvo (se existir)
+            const savedState = localStorage.getItem('neuroAprenderState');
+            if (savedState) {
+                const parsedState = JSON.parse(savedState);
+                gameState = { ...gameState, ...parsedState };
+            }
+            
+            updateUIFromState();
+            setupEventListeners();
+            initGames();
+        });
+        
+        function setupEventListeners() {
+            // Navegação principal
+            navHome.addEventListener('click', showMainContent);
+            navAchievements.addEventListener('click', showAchievements);
+            navSettings.addEventListener('click', showSettings);
+            
+            // Botões de voltar
+            backFromShopping.addEventListener('click', showMainContent);
+            backFromSyllables.addEventListener('click', showMainContent);
+            backFromAchievements.addEventListener('click', showMainContent);
+            backFromSettings.addEventListener('click', showMainContent);
+            
+            // Seleção de avatar
+            avatarOptions.forEach(option => {
+                option.addEventListener('click', function() {
+                    // Remover seleção anterior
+                    avatarOptions.forEach(opt => opt.classList.remove('selected'));
+                    
+                    // Adicionar seleção atual
+                    this.classList.add('selected');
+                    
+                    // Atualizar avatar
+                    currentAvatar = this.getAttribute('data-avatar');
+                    userAvatar.textContent = currentAvatar;
+                    
+                    // Salvar estado
+                    saveState();
+                });
+            });
+            
+            // Cards de jogo
+            document.querySelectorAll('.game-card').forEach(card => {
+                card.addEventListener('click', function() {
+                    const gameType = this.getAttribute('data-game');
+                    
+                    if (gameType === 'shopping') {
+                        showShoppingGame();
+                    } else if (gameType === 'syllables') {
+                        showSyllablesGame();
+                    } else if (gameType === 'puzzle') {
+                        alert("Quebra-cabeça numérico em desenvolvimento!");
+                    } else if (gameType === 'detective') {
+                        alert("Detetive de textos em desenvolvimento!");
+                    }
+                });
+            });
+            
+            // Configurações
+            dyslexiaFont.addEventListener('change', updateSettings);
+            audioInstructions.addEventListener('change', updateSettings);
+            timeLimit.addEventListener('change', updateSettings);
+            highContrast.addEventListener('change', updateSettings);
+            coloredSyllables.addEventListener('change', updateSettings);
+            
+            // Botão de verificar palavra
+            checkWordButton.addEventListener('click', checkWord);
+        }
+        
+        function initGames() {
+            initShoppingGame();
+            initSyllablesGame();
+        }
+        
+        function initShoppingGame() {
+            // Limpar containers
+            itemsContainer.innerHTML = '';
+            cartItems.innerHTML = '';
+            
+            // Adicionar itens à loja
+            shoppingState.items.forEach(item => {
+                const itemElement = document.createElement('div');
+                itemElement.className = 'item-card';
+                itemElement.innerHTML = `
+                    <div>${item.emoji}</div>
+                    <div>${item.name}</div>
+                    <div class="item-price">R$ ${item.price},00</div>
+                `;
+                
+                itemElement.addEventListener('click', () => {
+                    addToCart(item);
+                });
+                
+                itemsContainer.appendChild(itemElement);
+            });
+            
+            // Atualizar display de dinheiro
+            updateMoneyDisplay();
+        }
+        
+        function initSyllablesGame() {
+            // Limpar containers
+            syllableContainer.innerHTML = '';
+            wordContainer.innerHTML = '';
+            
+            // Definir palavra atual
+            const words = ["CASA", "BOLA", "PATO", "GATO", "SAPO"];
+            syllablesState.currentWord = words[Math.floor(Math.random() * words.length)];
+            targetWord.textContent = syllablesState.currentWord;
+            
+            // Embaralhar sílabas
+            shuffleArray(syllablesState.availableSyllables);
+            
+            // Adicionar sílabas disponíveis
+            syllablesState.availableSyllables.forEach(syllable => {
+                const syllableElement = document.createElement('div');
+                syllableElement.className = 'syllable';
+                syllableElement.textContent = syllable;
+                syllableElement.setAttribute('data-syllable', syllable);
+                
+                // Aplicar cores se a configuração estiver ativa
+                if (gameState.settings.coloredSyllables) {
+                    const colors = ['#4A90E2', '#50E3C2', '#F5A623', '#7ED321', '#BD10E0'];
+                    const color = colors[Math.floor(Math.random() * colors.length)];
+                    syllableElement.style.backgroundColor = color;
+                    syllableElement.style.color = 'white';
+                    syllableElement.style.borderColor = color;
+                }
+                
+                syllableElement.addEventListener('click', () => {
+                    addSyllableToWord(syllable);
+                });
+                
+                syllableContainer.appendChild(syllableElement);
+            });
+            
+            // Resetar sílabas selecionadas
+            syllablesState.selectedSyllables = [];
+            updateWordDisplay();
+        }
+        
+        function addToCart(item) {
+            // Verificar se há dinheiro suficiente
+            if (shoppingState.money - item.price < 0) {
+                shoppingFeedback.textContent = "Você não tem dinheiro suficiente para isso!";
+                shoppingFeedback.className = 'game-feedback incorrect';
+                return;
+            }
+            
+            // Adicionar ao carrinho
+            shoppingState.cart.push(item);
+            shoppingState.money -= item.price;
+            
+            // Atualizar UI
+            updateCartDisplay();
+            updateMoneyDisplay();
+            
+            // Feedback
+            shoppingFeedback.textContent = `${item.emoji} ${item.name} adicionado ao carrinho!`;
+            shoppingFeedback.className = 'game-feedback correct';
+            
+            // Verificar se gastou todo o dinheiro
+            if (shoppingState.money === 0) {
+                shoppingFeedback.textContent = "Parabéns! Você usou todo seu dinheiro com sabedoria!";
+                gameState.mathScore += 5;
+                saveState();
+            }
+        }
+        
+        function updateMoneyDisplay() {
+            moneyDisplay.textContent = `Seu dinheiro: R$ ${shoppingState.money},00`;
+        }
+        
+        function updateCartDisplay() {
+            cartItems.innerHTML = '';
+            
+            if (shoppingState.cart.length === 0) {
+                cartItems.innerHTML = '<p>Carrinho vazio</p>';
+                return;
+            }
+            
+            shoppingState.cart.forEach(item => {
+                const cartItem = document.createElement('div');
+                cartItem.textContent = `${item.emoji} ${item.name} - R$ ${item.price},00`;
+                cartItems.appendChild(cartItem);
+            });
+        }
+        
+        function addSyllableToWord(syllable) {
+            syllablesState.selectedSyllables.push(syllable);
+            updateWordDisplay();
+        }
+        
+        function updateWordDisplay() {
+            wordContainer.innerHTML = '';
+            
+            syllablesState.selectedSyllables.forEach(syllable => {
+                const syllableElement = document.createElement('div');
+                syllableElement.className = 'word-syllable';
+                syllableElement.textContent = syllable;
+                wordContainer.appendChild(syllableElement);
+            });
+        }
+        
+        function checkWord() {
+            const formedWord = syllablesState.selectedSyllables.join('');
+            
+            if (formedWord === syllablesState.currentWord) {
+                syllablesFeedback.textContent = "Parabéns! Você formou a palavra corretamente!";
+                syllablesFeedback.className = 'game-feedback correct';
+                gameState.portugueseScore += 10;
+                
+                // Próxima palavra após um delay
+                setTimeout(() => {
+                    initSyllablesGame();
+                    syllablesFeedback.textContent = '';
+                }, 2000);
+            } else {
+                syllablesFeedback.textContent = "Tente novamente! A palavra formada não está correta.";
+                syllablesFeedback.className = 'game-feedback incorrect';
+            }
+            
+            saveState();
+        }
+        
+        function showMainContent() {
+            hideAllScreens();
+            mainContent.style.display = 'block';
+            updateNavigation('home');
+        }
+        
+        function showShoppingGame() {
+            hideAllScreens();
+            shoppingGameScreen.style.display = 'flex';
+            shoppingFeedback.textContent = '';
+            updateNavigation('game');
+            
+            // Resetar jogo
+            shoppingState.money = 10;
+            shoppingState.cart = [];
+            initShoppingGame();
+            
+            // Iniciar timer se configurado
+            if (gameState.settings.timeLimit) {
+                startTimer(shoppingTimer, 120, () => {
+                    shoppingFeedback.textContent = "Tempo esgotado! Tente novamente.";
+                    shoppingFeedback.className = 'game-feedback incorrect';
+                });
+            }
+        }
+        
+        function showSyllablesGame() {
+            hideAllScreens();
+            syllablesGameScreen.style.display = 'flex';
+            syllablesFeedback.textContent = '';
+            updateNavigation('game');
+            
+            // Iniciar novo jogo
+            initSyllablesGame();
+            
+            // Iniciar timer se configurado
+            if (gameState.settings.timeLimit) {
+                startTimer(syllablesTimer, 180, () => {
+                    syllablesFeedback.textContent = "Tempo esgotado! Tente novamente.";
+                    syllablesFeedback.className = 'game-feedback incorrect';
+                });
+            }
+        }
+        
+        
