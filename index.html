@@ -110,13 +110,14 @@
         .avatar-selection {
             display: flex;
             justify-content: center;
-            gap: 20px;
+            gap: 15px;
             margin: 20px 0;
+            flex-wrap: wrap;
         }
         
         .avatar-option {
-            width: 80px;
-            height: 80px;
+            width: 70px;
+            height: 70px;
             border-radius: 50%;
             display: flex;
             flex-direction: column;
@@ -126,6 +127,7 @@
             transition: transform 0.3s;
             background-color: white;
             box-shadow: 0 4px 8px rgba(0,0,0,0.1);
+            padding: 5px;
         }
         
         .avatar-option:hover {
@@ -137,8 +139,13 @@
         }
         
         .avatar-icon {
-            font-size: 2rem;
+            font-size: 1.8rem;
             margin-bottom: 5px;
+        }
+        
+        .avatar-name {
+            font-size: 0.7rem;
+            text-align: center;
         }
         
         /* Menu de jogos */
@@ -531,6 +538,95 @@
             min-height: 50px;
         }
         
+        /* Jogo Detetive de Textos */
+        .detective-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .text-container {
+            background-color: var(--light);
+            border-radius: 10px;
+            padding: 15px;
+            margin-bottom: 20px;
+            line-height: 1.6;
+            max-height: 200px;
+            overflow-y: auto;
+        }
+        
+        .question-container {
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        
+        .question-text {
+            font-weight: bold;
+            margin-bottom: 10px;
+        }
+        
+        /* Jogo Quebra-Cabeça Numérico */
+        .puzzle-game {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            width: 100%;
+        }
+        
+        .sequence-container {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .sequence-number {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--light);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+        }
+        
+        .sequence-number.empty {
+            background-color: #f0f0f0;
+            border: 2px dashed #ccc;
+        }
+        
+        .number-options {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 20px;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+        
+        .number-option {
+            width: 50px;
+            height: 50px;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            background-color: var(--secondary);
+            border: 2px solid var(--primary);
+            border-radius: 8px;
+            font-size: 1.2rem;
+            font-weight: bold;
+            cursor: pointer;
+            transition: all 0.3s;
+        }
+        
+        .number-option:hover {
+            transform: scale(1.1);
+        }
+        
         /* Timer para TDAH */
         .timer-container {
             position: absolute;
@@ -556,6 +652,15 @@
             
             .items-container {
                 grid-template-columns: 1fr;
+            }
+            
+            .avatar-selection {
+                gap: 10px;
+            }
+            
+            .avatar-option {
+                width: 60px;
+                height: 60px;
             }
         }
         
@@ -596,11 +701,23 @@
                 <div class="avatar-selection">
                     <div class="avatar-option selected" data-avatar="Z">
                         <span class="avatar-icon">🐿️</span>
-                        <span>Zeca</span>
+                        <span class="avatar-name">Zeca</span>
                     </div>
                     <div class="avatar-option" data-avatar="L">
                         <span class="avatar-icon">🦉</span>
-                        <span>Lina</span>
+                        <span class="avatar-name">Lina</span>
+                    </div>
+                    <div class="avatar-option" data-avatar="T">
+                        <span class="avatar-icon">🐢</span>
+                        <span class="avatar-name">Tito</span>
+                    </div>
+                    <div class="avatar-option" data-avatar="B">
+                        <span class="avatar-icon">🐝</span>
+                        <span class="avatar-name">Bia</span>
+                    </div>
+                    <div class="avatar-option" data-avatar="L">
+                        <span class="avatar-icon">🦁</span>
+                        <span class="avatar-name">Leo</span>
                     </div>
                 </div>
             </div>
@@ -694,6 +811,64 @@
                     <button id="check-word" style="padding: 10px 20px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px;">Verificar</button>
                     
                     <div id="syllables-feedback" class="game-feedback"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Jogo - Detetive de Textos -->
+        <div class="game-screen" id="detective-game-screen">
+            <div class="game-header">
+                <button class="back-button" id="back-from-detective">←</button>
+                <h3>Detetive de Textos</h3>
+                <div class="timer-container" id="detective-timer">03:00</div>
+            </div>
+            
+            <div class="game-content">
+                <div class="detective-game">
+                    <div class="text-container" id="story-text">
+                        <!-- Texto da história será inserido via JavaScript -->
+                    </div>
+                    
+                    <div class="question-container">
+                        <div class="question-text" id="detective-question">
+                            <!-- Pergunta será inserida via JavaScript -->
+                        </div>
+                        
+                        <div class="game-options" id="detective-options">
+                            <!-- Opções de resposta serão inseridas via JavaScript -->
+                        </div>
+                    </div>
+                    
+                    <div id="detective-feedback" class="game-feedback"></div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Tela de Jogo - Quebra-Cabeça Numérico -->
+        <div class="game-screen" id="puzzle-game-screen">
+            <div class="game-header">
+                <button class="back-button" id="back-from-puzzle">←</button>
+                <h3>Quebra-Cabeça Numérico</h3>
+                <div class="timer-container" id="puzzle-timer">02:30</div>
+            </div>
+            
+            <div class="game-content">
+                <div class="puzzle-game">
+                    <div class="game-question" id="puzzle-question">
+                        Complete a sequência numérica:
+                    </div>
+                    
+                    <div class="sequence-container" id="sequence-container">
+                        <!-- Sequência numérica será inserida via JavaScript -->
+                    </div>
+                    
+                    <div class="number-options" id="number-options">
+                        <!-- Opções de números serão inseridas via JavaScript -->
+                    </div>
+                    
+                    <button id="check-sequence" style="padding: 10px 20px; background-color: var(--primary); color: white; border: none; border-radius: 8px; cursor: pointer; margin-top: 15px;">Verificar</button>
+                    
+                    <div id="puzzle-feedback" class="game-feedback"></div>
                 </div>
             </div>
         </div>
@@ -803,6 +978,8 @@
         const mainContent = document.getElementById('main-content');
         const shoppingGameScreen = document.getElementById('shopping-game-screen');
         const syllablesGameScreen = document.getElementById('syllables-game-screen');
+        const detectiveGameScreen = document.getElementById('detective-game-screen');
+        const puzzleGameScreen = document.getElementById('puzzle-game-screen');
         const achievementsScreen = document.getElementById('achievements-screen');
         const settingsScreen = document.getElementById('settings-screen');
         const userAvatar = document.getElementById('user-avatar');
@@ -815,6 +992,8 @@
         // Botões de voltar
         const backFromShopping = document.getElementById('back-from-shopping');
         const backFromSyllables = document.getElementById('back-from-syllables');
+        const backFromDetective = document.getElementById('back-from-detective');
+        const backFromPuzzle = document.getElementById('back-from-puzzle');
         const backFromAchievements = document.getElementById('back-from-achievements');
         const backFromSettings = document.getElementById('back-from-settings');
         
@@ -830,6 +1009,16 @@
         const checkWordButton = document.getElementById('check-word');
         const syllablesFeedback = document.getElementById('syllables-feedback');
         
+        const storyText = document.getElementById('story-text');
+        const detectiveQuestion = document.getElementById('detective-question');
+        const detectiveOptions = document.getElementById('detective-options');
+        const detectiveFeedback = document.getElementById('detective-feedback');
+        
+        const sequenceContainer = document.getElementById('sequence-container');
+        const numberOptions = document.getElementById('number-options');
+        const checkSequenceButton = document.getElementById('check-sequence');
+        const puzzleFeedback = document.getElementById('puzzle-feedback');
+        
         // Configurações
         const dyslexiaFont = document.getElementById('dyslexia-font');
         const audioInstructions = document.getElementById('audio-instructions');
@@ -843,6 +1032,8 @@
         // Timers
         const shoppingTimer = document.getElementById('shopping-timer');
         const syllablesTimer = document.getElementById('syllables-timer');
+        const detectiveTimer = document.getElementById('detective-timer');
+        const puzzleTimer = document.getElementById('puzzle-timer');
         
         // Progresso
         const overallProgress = document.getElementById('overall-progress');
@@ -885,276 +1076,63 @@
             availableSyllables: ["CA", "SA", "MA", "LA", "PE", "LO", "CO", "DA"]
         };
         
+        let detectiveState = {
+            currentStory: 0,
+            stories: [
+                {
+                    text: "Maria foi ao parque com seu cachorro. Ela levou uma bola vermelha e uma garrafa de água. No parque, eles encontraram João, que estava andando de bicicleta. Maria e João brincaram de jogar a bola para o cachorro pegar.",
+                    question: "O que Maria levou para o parque?",
+                    options: ["Uma bola azul e um livro", "Uma bola vermelha e uma garrafa de água", "Um lanche e um cobertor", "Uma bicicleta e um chapéu"],
+                    correctAnswer: 1
+                },
+                {
+                    text: "O sol estava brilhando no céu azul. Os pássaros cantavam nas árvores. Pedro decidiu plantar flores no jardim. Ele usou uma pá para cavar a terra e regou as mudinhas com cuidado.",
+                    question: "O que Pedro fez no jardim?",
+                    options: ["Colheu frutas", "Plantou flores", "Construiu uma casa", "Brincou com amigos"],
+                    correctAnswer: 1
+                }
+            ]
+        };
+        
+        let puzzleState = {
+            currentSequence: 0,
+            sequences: [
+                {
+                    sequence: [2, 4, 6, null, 10],
+                    missingIndex: 3,
+                    options: [7, 8, 9, 5],
+                    correctAnswer: 8
+                },
+                {
+                    sequence: [5, 10, 15, null, 25],
+                    missingIndex: 3,
+                    options: [20, 18, 22, 17],
+                    correctAnswer: 20
+                },
+                {
+                    sequence: [1, 3, 5, 7, null],
+                    missingIndex: 4,
+                    options: [8, 9, 10, 11],
+                    correctAnswer: 9
+                }
+            ]
+        };
+        
         // Inicialização
-        document.addEventListener('DOMContentLoaded', function() {
+        document.addEventListener('DOMContentLoaded'), function() 
             // Carregar estado salvo (se existir)
+            {
             const savedState = localStorage.getItem('neuroAprenderState');
-            if (savedState) {
+            if (savedState)
+            async (params) => {
+                }
+            }
+            
+             {
                 const parsedState = JSON.parse(savedState);
                 gameState = { ...gameState, ...parsedState };
             }
             
             updateUIFromState();
             setupEventListeners();
-            initGames();
-        });
-        
-        function setupEventListeners() {
-            // Navegação principal
-            navHome.addEventListener('click', showMainContent);
-            navAchievements.addEventListener('click', showAchievements);
-            navSettings.addEventListener('click', showSettings);
-            
-            // Botões de voltar
-            backFromShopping.addEventListener('click', showMainContent);
-            backFromSyllables.addEventListener('click', showMainContent);
-            backFromAchievements.addEventListener('click', showMainContent);
-            backFromSettings.addEventListener('click', showMainContent);
-            
-            // Seleção de avatar
-            avatarOptions.forEach(option => {
-                option.addEventListener('click', function() {
-                    // Remover seleção anterior
-                    avatarOptions.forEach(opt => opt.classList.remove('selected'));
-                    
-                    // Adicionar seleção atual
-                    this.classList.add('selected');
-                    
-                    // Atualizar avatar
-                    currentAvatar = this.getAttribute('data-avatar');
-                    userAvatar.textContent = currentAvatar;
-                    
-                    // Salvar estado
-                    saveState();
-                });
-            });
-            
-            // Cards de jogo
-            document.querySelectorAll('.game-card').forEach(card => {
-                card.addEventListener('click', function() {
-                    const gameType = this.getAttribute('data-game');
-                    
-                    if (gameType === 'shopping') {
-                        showShoppingGame();
-                    } else if (gameType === 'syllables') {
-                        showSyllablesGame();
-                    } else if (gameType === 'puzzle') {
-                        alert("Quebra-cabeça numérico em desenvolvimento!");
-                    } else if (gameType === 'detective') {
-                        alert("Detetive de textos em desenvolvimento!");
-                    }
-                });
-            });
-            
-            // Configurações
-            dyslexiaFont.addEventListener('change', updateSettings);
-            audioInstructions.addEventListener('change', updateSettings);
-            timeLimit.addEventListener('change', updateSettings);
-            highContrast.addEventListener('change', updateSettings);
-            coloredSyllables.addEventListener('change', updateSettings);
-            
-            // Botão de verificar palavra
-            checkWordButton.addEventListener('click', checkWord);
-        }
-        
-        function initGames() {
-            initShoppingGame();
-            initSyllablesGame();
-        }
-        
-        function initShoppingGame() {
-            // Limpar containers
-            itemsContainer.innerHTML = '';
-            cartItems.innerHTML = '';
-            
-            // Adicionar itens à loja
-            shoppingState.items.forEach(item => {
-                const itemElement = document.createElement('div');
-                itemElement.className = 'item-card';
-                itemElement.innerHTML = `
-                    <div>${item.emoji}</div>
-                    <div>${item.name}</div>
-                    <div class="item-price">R$ ${item.price},00</div>
-                `;
-                
-                itemElement.addEventListener('click', () => {
-                    addToCart(item);
-                });
-                
-                itemsContainer.appendChild(itemElement);
-            });
-            
-            // Atualizar display de dinheiro
-            updateMoneyDisplay();
-        }
-        
-        function initSyllablesGame() {
-            // Limpar containers
-            syllableContainer.innerHTML = '';
-            wordContainer.innerHTML = '';
-            
-            // Definir palavra atual
-            const words = ["CASA", "BOLA", "PATO", "GATO", "SAPO"];
-            syllablesState.currentWord = words[Math.floor(Math.random() * words.length)];
-            targetWord.textContent = syllablesState.currentWord;
-            
-            // Embaralhar sílabas
-            shuffleArray(syllablesState.availableSyllables);
-            
-            // Adicionar sílabas disponíveis
-            syllablesState.availableSyllables.forEach(syllable => {
-                const syllableElement = document.createElement('div');
-                syllableElement.className = 'syllable';
-                syllableElement.textContent = syllable;
-                syllableElement.setAttribute('data-syllable', syllable);
-                
-                // Aplicar cores se a configuração estiver ativa
-                if (gameState.settings.coloredSyllables) {
-                    const colors = ['#4A90E2', '#50E3C2', '#F5A623', '#7ED321', '#BD10E0'];
-                    const color = colors[Math.floor(Math.random() * colors.length)];
-                    syllableElement.style.backgroundColor = color;
-                    syllableElement.style.color = 'white';
-                    syllableElement.style.borderColor = color;
-                }
-                
-                syllableElement.addEventListener('click', () => {
-                    addSyllableToWord(syllable);
-                });
-                
-                syllableContainer.appendChild(syllableElement);
-            });
-            
-            // Resetar sílabas selecionadas
-            syllablesState.selectedSyllables = [];
-            updateWordDisplay();
-        }
-        
-        function addToCart(item) {
-            // Verificar se há dinheiro suficiente
-            if (shoppingState.money - item.price < 0) {
-                shoppingFeedback.textContent = "Você não tem dinheiro suficiente para isso!";
-                shoppingFeedback.className = 'game-feedback incorrect';
-                return;
-            }
-            
-            // Adicionar ao carrinho
-            shoppingState.cart.push(item);
-            shoppingState.money -= item.price;
-            
-            // Atualizar UI
-            updateCartDisplay();
-            updateMoneyDisplay();
-            
-            // Feedback
-            shoppingFeedback.textContent = `${item.emoji} ${item.name} adicionado ao carrinho!`;
-            shoppingFeedback.className = 'game-feedback correct';
-            
-            // Verificar se gastou todo o dinheiro
-            if (shoppingState.money === 0) {
-                shoppingFeedback.textContent = "Parabéns! Você usou todo seu dinheiro com sabedoria!";
-                gameState.mathScore += 5;
-                saveState();
-            }
-        }
-        
-        function updateMoneyDisplay() {
-            moneyDisplay.textContent = `Seu dinheiro: R$ ${shoppingState.money},00`;
-        }
-        
-        function updateCartDisplay() {
-            cartItems.innerHTML = '';
-            
-            if (shoppingState.cart.length === 0) {
-                cartItems.innerHTML = '<p>Carrinho vazio</p>';
-                return;
-            }
-            
-            shoppingState.cart.forEach(item => {
-                const cartItem = document.createElement('div');
-                cartItem.textContent = `${item.emoji} ${item.name} - R$ ${item.price},00`;
-                cartItems.appendChild(cartItem);
-            });
-        }
-        
-        function addSyllableToWord(syllable) {
-            syllablesState.selectedSyllables.push(syllable);
-            updateWordDisplay();
-        }
-        
-        function updateWordDisplay() {
-            wordContainer.innerHTML = '';
-            
-            syllablesState.selectedSyllables.forEach(syllable => {
-                const syllableElement = document.createElement('div');
-                syllableElement.className = 'word-syllable';
-                syllableElement.textContent = syllable;
-                wordContainer.appendChild(syllableElement);
-            });
-        }
-        
-        function checkWord() {
-            const formedWord = syllablesState.selectedSyllables.join('');
-            
-            if (formedWord === syllablesState.currentWord) {
-                syllablesFeedback.textContent = "Parabéns! Você formou a palavra corretamente!";
-                syllablesFeedback.className = 'game-feedback correct';
-                gameState.portugueseScore += 10;
-                
-                // Próxima palavra após um delay
-                setTimeout(() => {
-                    initSyllablesGame();
-                    syllablesFeedback.textContent = '';
-                }, 2000);
-            } else {
-                syllablesFeedback.textContent = "Tente novamente! A palavra formada não está correta.";
-                syllablesFeedback.className = 'game-feedback incorrect';
-            }
-            
-            saveState();
-        }
-        
-        function showMainContent() {
-            hideAllScreens();
-            mainContent.style.display = 'block';
-            updateNavigation('home');
-        }
-        
-        function showShoppingGame() {
-            hideAllScreens();
-            shoppingGameScreen.style.display = 'flex';
-            shoppingFeedback.textContent = '';
-            updateNavigation('game');
-            
-            // Resetar jogo
-            shoppingState.money = 10;
-            shoppingState.cart = [];
-            initShoppingGame();
-            
-            // Iniciar timer se configurado
-            if (gameState.settings.timeLimit) {
-                startTimer(shoppingTimer, 120, () => {
-                    shoppingFeedback.textContent = "Tempo esgotado! Tente novamente.";
-                    shoppingFeedback.className = 'game-feedback incorrect';
-                });
-            }
-        }
-        
-        function showSyllablesGame() {
-            hideAllScreens();
-            syllablesGameScreen.style.display = 'flex';
-            syllablesFeedback.textContent = '';
-            updateNavigation('game');
-            
-            // Iniciar novo jogo
-            initSyllablesGame();
-            
-            // Iniciar timer se configurado
-            if (gameState.settings.timeLimit) {
-                startTimer(syllablesTimer, 180, () => {
-                    syllablesFeedback.textContent = "Tempo esgotado! Tente novamente.";
-                    syllablesFeedback.className = 'game-feedback incorrect';
-                });
-            }
-        }
-        
-        
+           
