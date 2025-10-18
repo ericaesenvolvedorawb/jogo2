@@ -1,1 +1,6 @@
-
+/* Fonte para Dislexia */
+.dyslexia-font {
+    font-family: 'OpenDyslexic', sans-serif;
+        letter-spacing: 1px;
+            line-height: 1.6;
+            }
